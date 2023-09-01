@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Todo app</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div id="app">
+    <h1>Todo App</h1>
+    <div>
+      <!-- Use @keydown.enter to call addTodo when Enter key is pressed -->
+      <input type="text" v-model="newTodo" placeholder="Add a new todo" @keydown.enter="addTodo">
+      <button @click="addTodo">Add</button>
+    </div>
+    <ul>
+      <li v-for="(todo, index) in todos" :key="index" :class="{ completed: todo.completed }">
+        <label>
+          <input type="checkbox" v-model="todo.completed">
+          {{ todo.text }}
+        </label>
+        <button class="delete-button" @click="deleteTodo(index)">Delete</button>
+      </li>
+    </ul>
+  </div>
+
+  <script src="https://unpkg.com/vue@3.0.11/dist/vue.global.js"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          newTodo: '',
+          todos: [],
+        };
+      },
+      methods: {
+        addTodo() {
+          const todoText = this.newTodo.trim();
+          if (todoText === '') return;
+
+          this.todos.push({
+            text: todoText,
+            completed: false,
+          });
+
+          this.newTodo = '';
+        },
+        deleteTodo(index) {
+          this.todos.splice(index, 1);
+        },
+      },
+    });
+
+    app.mount('#app');
+  </script>
+</body>
+
+</html>
